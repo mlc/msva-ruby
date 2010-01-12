@@ -76,6 +76,7 @@ post '/reviewcert' do
   end
 
   uid = params["context"] + "://" + params["uid"]
+  # FIXME: properly escape this shell command
   `monkeysphere u "#{uid}"`.lines do |line|
     proto, key = line.strip.split(' ', 2)
     unless proto == "ssh-rsa"
