@@ -24,7 +24,11 @@
 
 $: << File.expand_path(File.dirname(__FILE__))
 
-require 'rubygems'
+begin
+  require 'rubygems'
+rescue LoadError
+  $stderr.puts "WARNING: Couldn't load rubygems; attempting to proceed without it..."
+end
 
 require 'base64'
 require 'json'
