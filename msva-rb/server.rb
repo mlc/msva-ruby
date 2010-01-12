@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
+# -*- coding: utf-8 -*-
 
 # first:
-# $ sudo aptitude install ruby libopenssl-ruby rubygems build-essential
-# $ sudo gem install json sinatra thin
+# $ sudo aptitude install ruby libopenssl-ruby libsinatra-ruby libjson-ruby thin
 # then:
 # $ ./msva-rb/server.rb -p 8901
 
