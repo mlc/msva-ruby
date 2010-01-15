@@ -79,7 +79,7 @@ post '/reviewcert' do
     halt({ :valid => false, :message => "only RSA keys supported for now"}.to_json)
   end
 
-  uid = params["context"] + "://" + params["uid"]
+  uid = params["context"] + "://" + params["peer"]
   # FIXME: properly escape this shell command
   `monkeysphere u "#{uid}"`.lines do |line|
     proto, key = line.strip.split(' ', 2)
