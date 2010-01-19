@@ -27,15 +27,23 @@ describe "msva-rb" do
       json["server"].should =~ /^MSVA-Ruby/
     end
 
-    it "should speak protocol version 1" do
+    it "should claim to speak protocol version 1" do
       json = JSON.parse(last_response.body)
       json["protoversion"].should be_a_kind_of Integer
       json["protoversion"].should == 1
     end
   end
 
-  describe "reviewing a certificate" do
+  it "should not accept a GET to /reviewcert" do
+    get '/reviewcert'
+    last_response.should_not be_ok
+  end
 
+  describe "reviewing a certificate" do
+    # --
+    # UM THIS IS THE BIG IMPORTANT PART AND I HAVEN'T WRITTEN IT YET
+    # SORRY
+    # --
   end
 
   it "should handle not-found pages with a JSON 404" do
