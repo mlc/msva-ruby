@@ -24,13 +24,15 @@ class OpenSshPubKey
   def initialize(keytxt = nil)
     return if keytxt.nil?
 
+    keytxt = Base64.decode64(keytxt)
+
     raise "not an openssh rsa pubkey" unless keytxt[0..10] == "\000\000\000\007ssh-rsa"
     offset, self.e = OpenSshPubKey.get_mpi(keytxt, 11)
     offset, self.n = OpenSshPubKey.get_mpi(keytxt, offset)
   end
 
   def to_s
-    OpenSSL::BN.new("ssh-rsa", 2).to_s(0) + e.to_s(0) + n.to_s(0)
+    Base64.encode64(OpenSSL::BN.new("ssh-rsa", 2).to_s(0) + e.to_s(0) + n.to_s(0)).gsub("\n", '')
   end
 
   private

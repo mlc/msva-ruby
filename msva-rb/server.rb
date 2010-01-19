@@ -30,7 +30,6 @@ rescue LoadError
   $stderr.puts "WARNING: Couldn't load rubygems; attempting to proceed without it..."
 end
 
-require 'base64'
 require 'json'
 require 'openssl'
 require 'sinatra'
@@ -88,7 +87,7 @@ post '/reviewcert' do
       next
     end
 
-    monkey_pkey = OpenSshPubKey.new(Base64.decode64(key))
+    monkey_pkey = OpenSshPubKey.new(key)
     if (monkey_pkey.n == ssl_pkey.n) && (monkey_pkey.e == ssl_pkey.e)
       halt({ :valid => true, :message => "#{uid} validated with Monkeysphere" }.to_json)
     end
