@@ -75,11 +75,7 @@ describe "msva-rb" do
 
     it "should succeed when appropriate" do
       mock_zimmermann_call
-      json_post '/reviewcert', {
-        :pkc => { :type => "x509der", :data => @zimmermann.to_byte_array },
-        :context => "https",
-        :peer => "zimmermann.mayfirst.org"
-      }
+      json_post '/reviewcert', proper_request
       response_json do |json|
         json["valid"].should be_true
       end
@@ -89,11 +85,7 @@ describe "msva-rb" do
     # need to be updated or removed
     it "should reject a non-RSA certificate" do
       app.any_instance.expects(:'`').never
-      json_post '/reviewcert', {
-        :pkc => { :type => "x509der", :data => @redhat.to_byte_array },
-        :context => "https",
-        :peer => "zimmermann.mayfirst.org"
-      }
+      json_post '/reviewcert', proper_request.merge( :pkc => { :type => "x509der", :data => @redhat.to_byte_array } )
       response_json do |json|
         json["valid"].should be_false
         json["message"].should =~ /only RSA/
@@ -104,11 +96,7 @@ describe "msva-rb" do
     # simulating example.com
     it "should NOT notice that the DER certificate fails to match the provided peer" do
       mock_zimmermann_call("example.com")
-      json_post '/reviewcert', {
-        :pkc => { :type => "x509der", :data => @zimmermann.to_byte_array },
-        :context => "https",
-        :peer => "example.com"
-      }
+      json_post '/reviewcert', proper_request.merge( :peer => "example.com" )
       response_json do |json|
         json["valid"].should be_true
       end
@@ -116,6 +104,14 @@ describe "msva-rb" do
 
     def mock_zimmermann_call(host = "zimmermann.mayfirst.org")
       app.any_instance.expects(:'`').with("monkeysphere u \"https://#{host}\"").returns(load_asset("ms-zimmermann-output"))
+    end
+
+    def proper_request
+      {
+        :pkc => { :type => "x509der", :data => @zimmermann.to_byte_array },
+        :context => "https",
+        :peer => "zimmermann.mayfirst.org"
+      }
     end
   end
 
