@@ -39,8 +39,11 @@ require 'opensshpubkey'
 configure do
   git_dir = File.join(File.dirname(__FILE__), "..", ".git")
   if File.directory?(git_dir)
-    head = File.read("#{git_dir}/HEAD").strip.split[-1]
-    @@git_rev = File.read(File.join(git_dir, head)).strip
+    @@git_rev = begin
+                  `git show-ref -h HEAD --hash`.strip
+                rescue
+                  nil
+                end
   else
     @@git_rev = nil
   end
