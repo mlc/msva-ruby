@@ -51,11 +51,25 @@ describe "msva-rb" do
       @redhat = load_asset("redhat-ecc.der")
     end
 
+    it "should fail with no JSON, without calling monkeysphere" do
+      app.any_instance.expects(:'`').never
+      # this is normal Rack::Test post method, not our special
+      # json_post, so the provided data will be passed in as
+      # application/x-www-form-urlencoded, and our application should
+      # fail to parse it
+      post '/reviewcert', {"whatever" => "yes"}
+      response_json do |json|
+        json["valid"].should be_false
+        json["message"].should =~ /couldn't parse/
+      end
+    end
+
     it "should fail on empty JSON, without calling monkeysphere" do
       app.any_instance.expects(:'`').never
       json_post '/reviewcert', {}
       response_json do |json|
         json["valid"].should be_false
+        json["message"].should =~ /pkc not present/
       end
     end
 
@@ -82,6 +96,7 @@ describe "msva-rb" do
       }
       response_json do |json|
         json["valid"].should be_false
+        json["message"].should =~ /only RSA/
       end
     end
 
