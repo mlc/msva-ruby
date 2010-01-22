@@ -49,6 +49,7 @@ describe "msva-rb" do
     before do
       @zimmermann = load_asset("zimmermann.der")
       @redhat = load_asset("redhat-ecc.der")
+      @mlcastle = load_asset("mlcastle.der")
     end
 
     it "should fail with no JSON, without calling monkeysphere" do
@@ -102,8 +103,26 @@ describe "msva-rb" do
       end
     end
 
-    def mock_zimmermann_call(host = "zimmermann.mayfirst.org")
-      app.any_instance.expects(:'`').with("monkeysphere u \"https://#{host}\"").returns(load_asset("ms-zimmermann-output"))
+    it "should fail if nothing is found in the monkeysphere" do
+      mock_zimmermann_call('zimmermann.mayfirst.org', '')
+      json_post '/reviewcert', proper_request
+      response_json do |json|
+        json["valid"].should be_false
+        json["message"].should =~ /No valid matching/
+      end
+    end
+
+    it "shoulf fail if the cert in the monkeysphere is not a match" do
+      mock_zimmermann_call
+      json_post '/reviewcert', proper_request.merge( :pkc => { :type => "x509der", :data => @mlcastle.to_byte_array } )
+      response_json do |json|
+        json["valid"].should be_false
+        json["message"].should =~ /No valid matching/
+      end
+    end
+
+    def mock_zimmermann_call(host = "zimmermann.mayfirst.org", output = load_asset("ms-zimmermann-output"))
+      app.any_instance.expects(:'`').with("monkeysphere u \"https://#{host}\"").returns(output)
     end
 
     def proper_request
