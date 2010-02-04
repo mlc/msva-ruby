@@ -30,6 +30,7 @@ rescue LoadError
   $stderr.puts "WARNING: Couldn't load rubygems; attempting to proceed without it..."
 end
 
+require 'erb'
 require 'json'
 require 'openssl'
 require 'sinatra'
@@ -49,12 +50,18 @@ configure do
   end
 end
 
-get '/' do
+get '/', :provides => "application/json" do
   content_type "application/json"
 
   result = { :available => true, :protoversion => 1, :server => "MSVA-Ruby 0.01" }
   result[:git_revision] = @@git_rev if @@git_rev
   result.to_json
+end
+
+get '/', :provides => "text/html" do
+  content_type "text/html; charset=utf-8"
+  @git_rev = @@git_rev
+  erb :about
 end
 
 post '/reviewcert' do
