@@ -92,6 +92,14 @@ describe "msva-rb" do
       end
     end
 
+    it "should be okay with a PEM certificate too" do
+      mock_zimmermann_call
+      json_post '/reviewcert', proper_request.merge( :pkc => { :type => "x509pem", :data => load_asset("zimmermann.pem") })
+      response_json do |json|
+        json["valid"].should be_true
+      end
+    end
+
     # if we make the monkeysphere support ECC, then this test will
     # need to be updated or removed
     it "should reject a non-RSA certificate" do

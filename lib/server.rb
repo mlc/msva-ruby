@@ -56,12 +56,17 @@ module Msva
         halt({ :valid => false, :message => "provided JSON query must be a hash"}.to_json)
       end
 
-      unless (params["pkc"] && params["pkc"]["type"] == "x509der")
+      unless (params["pkc"] && ["x509der", "x509pem"].include?(params["pkc"]["type"]))
         halt({ :valid => false, :message => "pkc not present or of not-understood type" }.to_json)
       end
 
-      data = params["pkc"]["data"].pack("C*")
-      ssl_pkey = OpenSSL::X509::Certificate.new(data).public_key
+      data = params["pkc"]["data"]
+      data = data.pack("C*") if data.kind_of?(Array)
+      begin
+        ssl_pkey = OpenSSL::X509::Certificate.new(data).public_key
+      rescue
+        halt({ :valid => false, :message => "X509 certificate could not be parsed" })
+      end
 
       unless ssl_pkey.is_a?(OpenSSL::PKey::RSA)
         halt({ :valid => false, :message => "only RSA keys supported for now"}.to_json)
