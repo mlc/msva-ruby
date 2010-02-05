@@ -12,30 +12,40 @@ describe "msva-rb" do
   end
 
   describe "requesting /" do
-    before do
-      get '/', {}, {"HTTP_ACCEPT" => "application/json"}
-    end
+    describe "with the Accept header set to JSON" do
+      before do
+        get '/', {}, {"HTTP_ACCEPT" => "application/json"}
+      end
 
-    it "should return a valid JSON document" do
-      last_response.should be_ok
-      last_response.headers["Content-Type"].should == "application/json"
-      assert_nothing_raised do
-        JSON.parse(last_response.body)
+      it "should return a valid JSON document" do
+        last_response.should be_ok
+        last_response.headers["Content-Type"].should == "application/json"
+        assert_nothing_raised do
+          JSON.parse(last_response.body)
+        end
+      end
+
+      it "should identify itself as MSVA-Ruby" do
+        response_json do |json|
+          json["server"].should_not be_nil
+          json["server"].should be_a_kind_of String
+          json["server"].should =~ /^MSVA-Ruby/
+        end
+      end
+
+      it "should claim to speak protocol version 1" do
+        response_json do |json|
+          json["protoversion"].should be_a_kind_of Integer
+          json["protoversion"].should == 1
+        end
       end
     end
 
-    it "should identify itself as MSVA-Ruby" do
-      response_json do |json|
-        json["server"].should_not be_nil
-        json["server"].should be_a_kind_of String
-        json["server"].should =~ /^MSVA-Ruby/
-      end
-    end
-
-    it "should claim to speak protocol version 1" do
-      response_json do |json|
-        json["protoversion"].should be_a_kind_of Integer
-        json["protoversion"].should == 1
+    describe "with the Accept header set to HTML" do
+      it "should return an informative HTML page" do
+        get '/', {}, {"HTTP_ACCEPT" => "text/html,application/xml"}
+        last_response.content_type.should =~ /^text\/html/
+        last_response.body.should =~ /Hello, this is MSVA-Ruby/
       end
     end
   end
