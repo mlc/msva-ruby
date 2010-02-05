@@ -4,7 +4,7 @@ describe "msva-rb" do
   include Rack::Test::Methods
 
   def app
-    @app ||= Sinatra::Application
+    @app ||= Msva::Server
   end
 
   def response_json
@@ -13,7 +13,7 @@ describe "msva-rb" do
 
   describe "requesting /" do
     before do
-      get '/'
+      get '/', {}, {"HTTP_ACCEPT" => "application/json"}
     end
 
     it "should return a valid JSON document" do

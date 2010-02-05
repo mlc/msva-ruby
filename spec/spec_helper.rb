@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), '..', 'server.rb')
+$: << File.join(File.dirname(__FILE__), "..", "lib")
 
 begin
   require 'rubygems'
@@ -6,7 +6,7 @@ rescue LoadError
   # hope for the best!
 end
 
-require 'sinatra'
+require 'sinatra/base'
 require 'rack/test'
 require 'spec'
 require 'spec/autorun'
@@ -14,15 +14,17 @@ require 'spec/interop/test'
 require 'mocha'
 require 'json'
 
+require 'server'
+require 'opensshpubkey'
+
 Spec::Runner.configure do |conf|
   conf.mock_with :mocha
 end
 
 # set test environment
-set :environment, :test
-set :run, false
-set :raise_errors, true
-set :logging, false
+Msva::Server.set :environment, :test
+Msva::Server.set :raise_errors, true
+Msva::Server.set :logging, false
 
 # some helper methods
 def load_asset(filename)
