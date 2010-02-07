@@ -59,7 +59,7 @@ module Msva
       begin
         ssl_pkey = OpenSSL::X509::Certificate.new(data).public_key
       rescue
-        halt({ :valid => false, :message => "X509 certificate could not be parsed" })
+        halt({ :valid => false, :message => "X509 certificate could not be parsed" }.to_json)
       end
 
       unless ssl_pkey.is_a?(OpenSSL::PKey::RSA)
