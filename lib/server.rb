@@ -17,6 +17,8 @@
 module Msva
   class Server < Sinatra::Application
     configure do
+      set :root, File.join(File.dirname(__FILE__), "..")
+
       git_dir = File.join(File.dirname(__FILE__), "..", ".git")
       if File.directory?(git_dir)
         @@git_rev = begin
