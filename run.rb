@@ -33,6 +33,7 @@ require 'openssl'
 require 'sinatra/base'
 
 require 'lib/json_request'
+require 'lib/monkeysphere'
 require 'lib/server'
 require 'lib/opensshpubkey'
 

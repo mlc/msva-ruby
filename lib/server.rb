@@ -43,45 +43,16 @@ module Msva
       erb :about
     end
 
-    post '/reviewcert' do
+    post '/reviewcert', :provides => "application/json" do
       content_type "application/json"
+      Msva::Validator.reviewcert(params).to_json
+    end
 
-      unless params.is_a?(Hash)
-        halt({ :valid => false, :message => "provided query must be a hash"}.to_json)
-      end
-
-      unless (params["pkc"] && ["x509der", "x509pem"].include?(params["pkc"]["type"]))
-        halt({ :valid => false, :message => "pkc not present or of not-understood type" }.to_json)
-      end
-
-      data = params["pkc"]["data"]
-      data = data.pack("C*") if data.kind_of?(Array)
-      begin
-        ssl_pkey = OpenSSL::X509::Certificate.new(data).public_key
-      rescue
-        halt({ :valid => false, :message => "X509 certificate could not be parsed" }.to_json)
-      end
-
-      unless ssl_pkey.is_a?(OpenSSL::PKey::RSA)
-        halt({ :valid => false, :message => "only RSA keys supported for now"}.to_json)
-      end
-
-      uid = params["context"] + "://" + params["peer"]
-      # FIXME: properly escape this shell command
-      `monkeysphere u "#{uid}"`.lines do |line|
-        proto, key = line.strip.split(' ', 2)
-        unless proto == "ssh-rsa"
-          $stderr.puts "WARNING: non-rsa key type #{proto} found!"
-          next
-        end
-
-        monkey_pkey = OpenSshPubKey.new(key)
-        if (monkey_pkey.n == ssl_pkey.n) && (monkey_pkey.e == ssl_pkey.e)
-          halt({ :valid => true, :message => "#{uid} validated with Monkeysphere" }.to_json)
-        end
-      end
-      
-      { :valid => false, :message => "No valid matching OpenPGP keys found for #{uid}" }.to_json
+    post '/reviewcert', :provides => 'text/html' do
+      ret = Msva::Validator.reviewcert(params)
+      @valid = ret[:valid]
+      @message = ret[:message]
+      erb :reviewcert
     end
 
     # TODO: fill in if we need to do so

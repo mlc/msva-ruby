@@ -63,18 +63,18 @@ describe "msva-rb" do
     end
 
     it "should fail with no JSON, without calling monkeysphere" do
-      app.any_instance.expects(:'`').never
+      Msva::Validator.expects(:'`').never
       # this is normal Rack::Test post method, not our special
       # json_post, so the provided data will be passed in as
       # application/x-www-form-urlencoded
-      post '/reviewcert', {"whatever" => "yes"}
+      post '/reviewcert', {"whatever" => "yes"}, {"HTTP_ACCEPT" => "application/json"}
       response_json do |json|
         json["valid"].should be_false
       end
     end
 
     it "should fail on empty JSON, without calling monkeysphere" do
-      app.any_instance.expects(:'`').never
+      Msva::Validator.expects(:'`').never
       json_post '/reviewcert', {}
       response_json do |json|
         json["valid"].should be_false
@@ -101,7 +101,7 @@ describe "msva-rb" do
     # if we make the monkeysphere support ECC, then this test will
     # need to be updated or removed
     it "should reject a non-RSA certificate" do
-      app.any_instance.expects(:'`').never
+      Msva::Validator.expects(:'`').never
       json_post '/reviewcert', proper_request.merge( :pkc => { :type => "x509der", :data => @redhat.to_byte_array } )
       response_json do |json|
         json["valid"].should be_false
@@ -138,7 +138,7 @@ describe "msva-rb" do
     end
 
     def mock_zimmermann_call(host = "zimmermann.mayfirst.org", output = load_asset("ms-zimmermann-output"))
-      app.any_instance.expects(:'`').with("monkeysphere u \"https://#{host}\"").returns(output)
+      Msva::Validator.expects(:'`').with("monkeysphere u \"https://#{host}\"").returns(output)
     end
 
     def proper_request

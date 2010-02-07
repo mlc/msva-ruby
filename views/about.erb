@@ -2,12 +2,44 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title>msva-rb</title>
+    <style type="text/css">
+      body, html { font-family: sans-serif; }
+    </style>
   </head>
   <body>
     <h1>msva-rb</h1>
     <p>
       Hello, this is MSVA-Ruby version 0.01.
     </p>
+    <hr />
+    <form action="/reviewcert" method="post">
+      <h2>Test a key</h2>
+      <p>
+      <p>
+	<label for="context">Context:</label>
+	<select name="context" id="context">
+	  <option value="https">https</option>
+	  <option value="ssh">ssh</option>
+	</select>
+      </p>
+      <p>
+	<label for="peer">Peer:</label>
+	<input type="text" name="peer" id="peer" />
+      </p>
+	<label for="pkc_type"><acronym title="Public Key Certificate">PKC</acronym> Type:</label>
+	<select name="pkc[type]" id="pkc_type">
+	  <option value="x509pem">X.509 PEM</option>
+	  <option value="x509der">X.509 DER</option>
+	</select>
+      </p>
+      <p>
+	<label for="pkc_data">PKC Data:</label>
+	<br />
+	<textarea style="width: 40em; height: 20ex;" name="pkc[data]" id="pkc_data"></textarea>
+      </p>
+      <p><input type="submit" value="Validate key" /></p>
+    </form>
+    <hr />
     <p>
       Copyright &copy; 2010 Michael Castleman.
     </p>

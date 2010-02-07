@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>msva-rb</title>
+    <style type="text/css">
+      body, html { font-family: sans-serif; }
+    </style>
+  </head>
+  <body>
+    <h1>msva-rb</h1>
+    <h2>Input</h2>
+    <p><code><%= Rack::Utils.escape_html(params.inspect) %></code></p>
+
+    <h2>Result</h2>
+    <% if @valid %>
+      <p style="color: green;">Certificate is valid</p>
+    <% else %>
+      <p style="color: red;">Certificate is not valid</p>
+    <% end %>
+
+    <p>Message: <%= Rack::Utils.escape_html(@message) %></p>
+  </body>
+</html>
