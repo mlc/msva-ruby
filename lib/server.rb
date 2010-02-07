@@ -46,14 +46,8 @@ module Msva
     post '/reviewcert' do
       content_type "application/json"
 
-      begin
-        params = JSON.parse(request.body.string)
-      rescue JSON::ParserError
-        halt({ :valid => false, :message => "couldn't parse JSON query"}.to_json)
-      end
-
       unless params.is_a?(Hash)
-        halt({ :valid => false, :message => "provided JSON query must be a hash"}.to_json)
+        halt({ :valid => false, :message => "provided query must be a hash"}.to_json)
       end
 
       unless (params["pkc"] && ["x509der", "x509pem"].include?(params["pkc"]["type"]))

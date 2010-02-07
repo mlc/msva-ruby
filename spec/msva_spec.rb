@@ -66,12 +66,10 @@ describe "msva-rb" do
       app.any_instance.expects(:'`').never
       # this is normal Rack::Test post method, not our special
       # json_post, so the provided data will be passed in as
-      # application/x-www-form-urlencoded, and our application should
-      # fail to parse it
+      # application/x-www-form-urlencoded
       post '/reviewcert', {"whatever" => "yes"}
       response_json do |json|
         json["valid"].should be_false
-        json["message"].should =~ /couldn't parse/
       end
     end
 
@@ -130,7 +128,7 @@ describe "msva-rb" do
       end
     end
 
-    it "shoulf fail if the cert in the monkeysphere is not a match" do
+    it "should fail if the cert in the monkeysphere is not a match" do
       mock_zimmermann_call
       json_post '/reviewcert', proper_request.merge( :pkc => { :type => "x509der", :data => @mlcastle.to_byte_array } )
       response_json do |json|

@@ -14,6 +14,7 @@ require 'spec/interop/test'
 require 'mocha'
 require 'json'
 
+require 'json_request'
 require 'server'
 require 'opensshpubkey'
 
@@ -39,7 +40,7 @@ end
 
 class Rack::Test::Session
   def json_post(uri, body, options = {})
-    post uri, {}, options.merge(:input => JSON(body), :content_type => "application/json")
+    post uri, {}, options.merge(:input => JSON(body), "CONTENT_TYPE" => "application/json")
   end
 end
 
