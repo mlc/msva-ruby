@@ -47,7 +47,7 @@ from within the `msva-ruby` directory. This will start the agent
 listening (only to connections from localhost) on port 8901.
 
 You can then visit <http://localhost:8901/> to validate some keys or use
-[xul-ext-monkeysphere](http://github.com/mlc/xul-ext-monkeyspehere) to
+[xul-ext-monkeysphere](http://github.com/mlc/xul-ext-monkeysphere) to
 validate TLS keys from within your web browser.
 
 ### Running the test suite
