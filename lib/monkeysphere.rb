@@ -30,7 +30,7 @@ module Msva
           next
         end
 
-        monkey_pkey = OpenSshPubKey.new(key)
+        monkey_pkey = OpenSshPubKey::RSA.new(key)
         if (monkey_pkey.n == ssl_pkey.n) && (monkey_pkey.e == ssl_pkey.e)
           return({ :valid => true, :message => "#{uid} validated with Monkeysphere" })
         end
