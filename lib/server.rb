@@ -18,17 +18,6 @@ module Msva
   class Server < Sinatra::Application
     configure do
       set :root, File.join(File.dirname(__FILE__), "..")
-
-      git_dir = File.join(File.dirname(__FILE__), "..", ".git")
-      if File.directory?(git_dir)
-        @@git_rev = begin
-                      `git show-ref -h HEAD --hash`.strip
-                    rescue
-                      nil
-                    end
-      else
-        @@git_rev = nil
-      end
     end
 
     OUR_TYPES = ["text/html", "application/xhtml+xml", "application/json"]
@@ -46,11 +35,9 @@ module Msva
 
     get '/' do
       if @html
-        @git_rev = @@git_rev
         erb :about
       else
         result = { :available => true, :protoversion => 1, :server => "MSVA-Ruby 0.01" }
-        result[:git_revision] = @@git_rev if @@git_rev
         result.to_json
       end
     end
