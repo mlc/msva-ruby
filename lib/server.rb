@@ -31,30 +31,39 @@ module Msva
       end
     end
 
-    get '/', :provides => "application/json" do
-      content_type "application/json"
+    OUR_TYPES = ["text/html", "application/xhtml+xml", "application/json"]
 
-      result = { :available => true, :protoversion => 1, :server => "MSVA-Ruby 0.01" }
-      result[:git_revision] = @@git_rev if @@git_rev
-      result.to_json
+    before do
+      @response_type = MIMEParse.best_match(OUR_TYPES, env["HTTP_ACCEPT"] || "*/*")
+      unless @response_type && !@response_type.empty?
+        halt 406, { 'Content-Type' => 'text/plain' }, "sorry, we can only serve HTML, XHTML, or JSON\n"
+      end
+
+      @html = @response_type != "application/json"
+      content_type @response_type + (@html ? "; charset=utf-8" : '')
+
     end
 
-    get '/', :provides => "text/html" do
-      content_type "text/html; charset=utf-8"
-      @git_rev = @@git_rev
-      erb :about
+    get '/' do
+      if @html
+        @git_rev = @@git_rev
+        erb :about
+      else
+        result = { :available => true, :protoversion => 1, :server => "MSVA-Ruby 0.01" }
+        result[:git_revision] = @@git_rev if @@git_rev
+        result.to_json
+      end
     end
 
-    post '/reviewcert', :provides => "application/json" do
-      content_type "application/json"
-      Msva::Validator.reviewcert(params).to_json
-    end
-
-    post '/reviewcert', :provides => 'text/html' do
-      ret = Msva::Validator.reviewcert(params)
-      @valid = ret[:valid]
-      @message = ret[:message]
-      erb :reviewcert
+    post '/reviewcert' do
+      result = Msva::Validator.reviewcert(params)
+      if @html
+        @valid = result[:valid]
+        @message = result[:message]
+        erb :reviewcert
+      else
+          result.to_json
+      end
     end
 
     # TODO: fill in if we need to do so

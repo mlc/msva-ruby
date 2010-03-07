@@ -36,5 +36,6 @@ require 'lib/json_request'
 require 'lib/monkeysphere'
 require 'lib/server'
 require 'lib/opensshpubkey'
+require 'lib/mimeparse'
 
 Msva::Server.run! :host => 'localhost', :port => 8901

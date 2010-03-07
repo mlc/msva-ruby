@@ -15,6 +15,7 @@ require 'mocha'
 require 'json'
 
 require 'json_request'
+require 'mimeparse'
 require 'monkeysphere'
 require 'server'
 require 'opensshpubkey'
