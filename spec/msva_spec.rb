@@ -48,6 +48,25 @@ describe "msva-rb" do
         last_response.body.should =~ /Hello, this is MSVA-Ruby/
       end
     end
+
+    describe "with the Accept header set to something weird" do
+      before do
+        get '/', {}, {"HTTP_ACCEPT" => "video/mp4"}
+      end
+
+      it "should return HTTP status code 406" do
+        last_response.should_not be_ok
+        last_response.status.should == 406
+      end
+    end
+
+    describe "without any HTTP Accept header" do
+      it "should default to JSON" do
+        get '/'
+        last_response.should be_ok
+        last_response.headers["Content-Type"].should == "application/json"
+      end
+    end
   end
 
   it "should not accept a GET to /reviewcert" do
