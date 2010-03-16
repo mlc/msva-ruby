@@ -17,7 +17,7 @@
 module Msva
   class Server < Sinatra::Application
     configure do
-      set :root, File.join(File.dirname(__FILE__), "..")
+      set :root, File.join(File.dirname(__FILE__), "..", "..", "data", "msva")
     end
 
     OUR_TYPES = ["text/html", "application/xhtml+xml", "application/json"]
