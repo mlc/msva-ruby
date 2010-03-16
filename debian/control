@@ -11,7 +11,7 @@ Vcs-Browser: http://github.com/mlc/msva-ruby
 
 Package: msva-ruby
 Architecture: all
-Depends: monkeysphere, ruby1.8, libjson-ruby1.8, libopenssl-ruby1.8, libsinatra-ruby1.8, thin1.8, ${misc: Depends}
+Depends: monkeysphere, ruby1.8, libjson-ruby1.8, libopenssl-ruby1.8, libsinatra-ruby1.8, thin1.8, ${misc:Depends}
 Provides: monkeysphere-validation-agent
 Enhances: monkeysphere
 Description: Cryptographic identity validation agent (Ruby implementation)
