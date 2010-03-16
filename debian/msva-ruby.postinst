@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ]; then
+    update-alternatives --install /usr/bin/monkeysphere-validation-agent monkeysphere-validation-agent /usr/bin/msva-ruby 40
+fi
+
+#DEBHELPER#
