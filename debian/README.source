@@ -1,0 +1,7 @@
+This package includes patches managed with the «quilt» patch
+management system. Changes to the upstream sources are stored as diffs
+in debian/patches and applied during the build.
+
+See /usr/share/doc/quilt/README.source for a detailed explanation.
+
+ -- mike castleman <m@mlcastle.net>,  Tue, 16 Mar 2010 16:07:41 -0400

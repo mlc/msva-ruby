@@ -1,0 +1,3 @@
+lib/*	/usr/lib/ruby/1.8
+data/msva/*     /usr/share/msva-ruby
+bin/msva-ruby   /usr/bin/msva-ruby

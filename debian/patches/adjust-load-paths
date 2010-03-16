@@ -1,0 +1,26 @@
+Index: msva-ruby/bin/msva-ruby
+===================================================================
+--- msva-ruby.orig/bin/msva-ruby	2010-03-16 16:08:35.824191842 -0400
++++ msva-ruby/bin/msva-ruby	2010-03-16 16:10:00.179165304 -0400
+@@ -21,7 +21,7 @@
+ # You should have received a copy of the GNU General Public License
+ # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ 
+-$:.unshift File.dirname(__FILE__) + '/../lib'
++$:.unshift File.expand_path(File.join(File.dirname('__FILE__'), '..', 'lib', 'ruby', RUBY_VERSION.match(/^\d+\.\d+/).to_s, 'msva'))
+ 
+ require 'erb'
+ require 'json'
+Index: msva-ruby/lib/msva/server.rb
+===================================================================
+--- msva-ruby.orig/lib/msva/server.rb	2010-03-16 16:10:30.807165167 -0400
++++ msva-ruby/lib/msva/server.rb	2010-03-16 16:10:55.843248524 -0400
+@@ -17,7 +17,7 @@
+ module Msva
+   class Server < Sinatra::Application
+     configure do
+-      set :root, File.join(File.dirname(__FILE__), "..", "..", "data", "msva")
++      set :root, '/usr/share/msva-ruby'
+     end
+ 
+     OUR_TYPES = ["text/html", "application/xhtml+xml", "application/json"]

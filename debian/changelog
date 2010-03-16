@@ -1,0 +1,5 @@
+msva-ruby (0.1-1) unstable; urgency=low
+
+  * Initial Debian packaging (closes: #574159)
+
+ -- mike castleman <m@mlcastle.net>  Tue, 16 Mar 2010 15:32:21 -0400

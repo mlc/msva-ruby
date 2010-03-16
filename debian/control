@@ -1,0 +1,22 @@
+Source: msva-ruby
+Section: net
+Priority: optional
+Maintainer: mike castleman <m@mlcastle.net>
+Uploaders: Micah Anderson <micah@debian.org>, Daniel Kahn Gillmor <dkg@fifthhorseman.net>
+Build-Depends: debhelper (>= 7), cdbs, quilt
+Standards-Version: 3.8.4
+Homepage: http://web.monkeysphere.info/
+Vcs-Git: git://github.com/mlc/msva-ruby.git
+Vcs-Browser: http://github.com/mlc/msva-ruby
+
+Package: msva-ruby
+Architecture: all
+Depends: monkeysphere, ruby1.8, libjson-ruby1.8, libopenssl-ruby1.8, libsinatra-ruby1.8, thin1.8, ${misc: Depends}
+Provides: monkeysphere-validation-agent
+Enhances: monkeysphere
+Description: Cryptographic identity validation agent (Ruby implementation)
+ The Monkeysphere Validation Agent offers a local service for tools to
+ validate certificates (both X.509 and OpenPGP) and other public keys.
+ .
+ This package contains a ruby implementation of a Monkeysphere
+ Validation Agent.

@@ -1,0 +1,49 @@
+Index: msva-ruby/Rakefile
+===================================================================
+--- msva-ruby.orig/Rakefile	2010-03-16 16:03:53.680342416 -0400
++++ msva-ruby/Rakefile	2010-03-16 16:03:56.767248017 -0400
+@@ -1,11 +1,5 @@
+ # -*- ruby -*-
+ 
+-begin
+-  require 'rubygems'
+-rescue LoadError
+-  $stderr.puts "no rubygems. no guarantees of success."
+-end
+-
+ require 'rake'
+ require 'spec/rake/spectask'
+ 
+Index: msva-ruby/bin/msva-ruby
+===================================================================
+--- msva-ruby.orig/bin/msva-ruby	2010-03-16 16:04:04.839176642 -0400
++++ msva-ruby/bin/msva-ruby	2010-03-16 16:04:10.371171485 -0400
+@@ -23,12 +23,6 @@
+ 
+ $:.unshift File.dirname(__FILE__) + '/../lib'
+ 
+-begin
+-  require 'rubygems'
+-rescue LoadError
+-  $stderr.puts "WARNING: Couldn't load rubygems; attempting to proceed without it..."
+-end
+-
+ require 'erb'
+ require 'json'
+ require 'openssl'
+Index: msva-ruby/spec/spec_helper.rb
+===================================================================
+--- msva-ruby.orig/spec/spec_helper.rb	2010-03-16 16:04:16.608166549 -0400
++++ msva-ruby/spec/spec_helper.rb	2010-03-16 16:04:19.371249705 -0400
+@@ -1,11 +1,5 @@
+ $: << File.join(File.dirname(__FILE__), "..", "lib")
+ 
+-begin
+-  require 'rubygems'
+-rescue LoadError
+-  # hope for the best!
+-end
+-
+ require 'sinatra/base'
+ require 'rack/test'
+ require 'spec'
