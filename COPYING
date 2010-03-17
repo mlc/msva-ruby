@@ -1,3 +1,9 @@
+msva-ruby is released under the GNU General Public License (version 3,
+or, at your option, any later version) with the additional exemption
+that compiling, linking, and/or using OpenSSL together with this
+software is allowed. A copy of the GPL is included below.
+
+----
 
 		    GNU GENERAL PUBLIC LICENSE
 		       Version 3, 29 June 2007
