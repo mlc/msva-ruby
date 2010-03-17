@@ -1,3 +1,15 @@
+The file lib/msva/mimeparse.rb is based on code from
+http://code.google.com/p/mimeparse/ and which is distributed under the
+MIT license. A copy of the MIT license included in that file and is also
+available at http://www.opensource.org/licenses/mit-license.php
+
+All other parts of msva-ruby are released under the GNU General Public
+License (version 3, or, at your option, any later version) with the
+additional exemption that compiling, linking, and/or using OpenSSL
+together with this software is allowed. A copy of the GPL is included
+below.
+
+----
 
 		    GNU GENERAL PUBLIC LICENSE
 		       Version 3, 29 June 2007
